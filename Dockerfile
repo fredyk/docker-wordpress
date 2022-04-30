@@ -14,9 +14,19 @@ RUN chmod +x wp-cli.phar
 RUN mv wp-cli.phar /usr/local/bin/wp
 RUN wp --info
 
-RUN echo "pwd: $(pwd)"
 # RUN wp --allow-root package install https://github.com/wp-cli/wp-super-cache-cli.git
 RUN wp --allow-root package install /tmp/wp-super-cache-cli-master.zip
-RUN wp --allow-root plugin install --activate wp-super-cache
-RUN wp --allow-root plugin install --activate jwt-authentication-for-wp-rest-api
-RUN wp --allow-root plugin install --activate updraftplus
+
+RUN chown www-data:www-data /var/www -R
+
+USER www-data
+
+#ENTRYPOINT wp core download && \
+#    wp config create --dbname="$WORDPRESS_DB_NAME" --dbuser="$WORDPRESS_DB_USER" --dbpass="$WORDPRESS_DB_PASSWORD" --dbhost="$WORDPRESS_DB_HOST" && \
+#    wp core install && \
+#    wp plugin install --activate wp-super-cache && \
+#    wp plugin install --activate jwt-authentication-for-wp-rest-api && \
+#    wp plugin install --activate updraftplus && \
+#    wp plugin install --activate duplicator && \
+#    wp plugin install --activate wordfence && \
+#    docker-entrypoint.sh
